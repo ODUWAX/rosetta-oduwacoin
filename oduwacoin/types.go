@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package bitcoin
+package oduwacoin
 
 import (
 	"fmt"
@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	// Blockchain is Bitcoin.
-	Blockchain string = "Bitcoin"
+	// Blockchain is Oduwacoin.
+	Blockchain string = "Oduwacoin"
 
 	// MainnetNetwork is the value of the network
 	// in MainnetNetworkIdentifier.
@@ -38,9 +38,9 @@ const (
 	// used in Currency.
 	Decimals = 8
 
-	// SatoshisInBitcoin is the number of
+	// SatoshisInOduwacoin is the number of
 	// Satoshis in 1 BTC (10^8).
-	SatoshisInBitcoin = 100000000
+	SatoshisInOduwacoin = 100000000
 
 	// InputOpType is used to describe
 	// INPUT.
@@ -55,7 +55,7 @@ const (
 	CoinbaseOpType = "COINBASE"
 
 	// SuccessStatus is the status of all
-	// Bitcoin operations because anything
+	// Oduwacoin operations because anything
 	// on-chain is considered successful.
 	SuccessStatus = "SUCCESS"
 
@@ -66,17 +66,17 @@ const (
 	SkippedStatus = "SKIPPED"
 
 	// TransactionHashLength is the length
-	// of any transaction hash in Bitcoin.
+	// of any transaction hash in Oduwacoin.
 	TransactionHashLength = 64
 
-	// NullData is returned by bitcoind
+	// NullData is returned by oduwacoind
 	// as the ScriptPubKey.Type for OP_RETURN
 	// locking scripts.
 	NullData = "nulldata"
 )
 
 // Fee estimate constants
-// Source: https://bitcoinops.org/en/tools/calc-size/
+// Source: https://oduwacoinops.org/en/tools/calc-size/
 const (
 	MinFeeRate            = float64(0.00001) // nolint:gomnd
 	TransactionOverhead   = 12               // 4 version, 2 segwit flag, 1 vin, 1 vout, 4 lock time
@@ -88,7 +88,7 @@ const (
 var (
 	// MainnetGenesisBlockIdentifier is the genesis block for mainnet.
 	MainnetGenesisBlockIdentifier = &types.BlockIdentifier{
-		Hash: "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",
+		Hash: "000006301df0e22e8c3b5eed7aa53e9d3194652b4c7871390f265b0506c9583e",
 	}
 
 	// MainnetParams are the params for mainnet.
@@ -96,7 +96,7 @@ var (
 
 	// MainnetCurrency is the *types.Currency for mainnet.
 	MainnetCurrency = &types.Currency{
-		Symbol:   "BTC",
+		Symbol:   "OWC",
 		Decimals: Decimals,
 	}
 
@@ -110,7 +110,7 @@ var (
 
 	// TestnetCurrency is the *types.Currency for testnet.
 	TestnetCurrency = &types.Currency{
-		Symbol:   "tBTC",
+		Symbol:   "tOWC",
 		Decimals: Decimals,
 	}
 
@@ -135,7 +135,7 @@ var (
 )
 
 // ScriptPubKey is a script placed on the output operations
-// of a Bitcoin transaction that must be satisfied to spend
+// of a Oduwacoin transaction that must be satisfied to spend
 // the output.
 type ScriptPubKey struct {
 	ASM          string   `json:"asm"`
@@ -146,14 +146,14 @@ type ScriptPubKey struct {
 }
 
 // ScriptSig is a script on the input operations of a
-// Bitcoin transaction that satisfies the ScriptPubKey
+// Oduwacoin transaction that satisfies the ScriptPubKey
 // on an output being spent.
 type ScriptSig struct {
 	ASM string `json:"asm"`
 	Hex string `json:"hex"`
 }
 
-// BlockchainInfo is information about the Bitcoin network.
+// BlockchainInfo is information about the Oduwacoin network.
 // This struct only contains the information necessary for
 // this implementation.
 type BlockchainInfo struct {
@@ -176,7 +176,7 @@ type PeerInfo struct {
 	SyncedHeaders  int64  `json:"synced_headers"`
 }
 
-// Block is a raw Bitcoin block (with verbosity == 2).
+// Block is a raw Oduwacoin block (with verbosity == 2).
 type Block struct {
 	Hash              string  `json:"hash"`
 	Height            int64   `json:"height"`
@@ -223,7 +223,7 @@ type BlockMetadata struct {
 	Difficulty float64 `json:"difficulty,omitempty"`
 }
 
-// Transaction is a raw Bitcoin transaction.
+// Transaction is a raw Oduwacoin transaction.
 type Transaction struct {
 	Hex      string `json:"hex"`
 	Hash     string `json:"txid"`
@@ -260,7 +260,7 @@ type TransactionMetadata struct {
 	Weight   int64 `json:"weight,omitempty"`
 }
 
-// Input is a raw input in a Bitcoin transaction.
+// Input is a raw input in a Oduwacoin transaction.
 type Input struct {
 	TxHash      string     `json:"txid"`
 	Vout        int64      `json:"vout"`
@@ -284,7 +284,7 @@ func (i Input) Metadata() (map[string]interface{}, error) {
 	return types.MarshalMap(m)
 }
 
-// Output is a raw output in a Bitcoin transaction.
+// Output is a raw output in a Oduwacoin transaction.
 type Output struct {
 	Value        float64       `json:"value"`
 	Index        int64         `json:"n"`
@@ -301,7 +301,7 @@ func (o Output) Metadata() (map[string]interface{}, error) {
 }
 
 // OperationMetadata is a collection of useful
-// metadata from Bitcoin inputs and outputs.
+// metadata from Oduwacoin inputs and outputs.
 type OperationMetadata struct {
 	// Coinbase Metadata
 	Coinbase string `json:"coinbase,omitempty"`
@@ -499,7 +499,7 @@ func (r rawMempoolResponse) Err() error {
 
 // CoinIdentifier converts a tx hash and vout into
 // the canonical CoinIdentifier.Identifier used in
-// rosetta-bitcoin.
+// rosetta-oduwacoin.
 func CoinIdentifier(hash string, vout int64) string {
 	return fmt.Sprintf("%s:%d", hash, vout)
 }

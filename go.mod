@@ -1,4 +1,4 @@
-module github.com/coinbase/rosetta-bitcoin
+module github.com/ODUWAX/rosetta-oduwacoin
 
 go 1.13
 
